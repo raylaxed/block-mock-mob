@@ -22,10 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- event listeners ---
 
-    // toggle mock input
+    // Clear mock input when switching actions to avoid confusion
     actionSelect.addEventListener('change', () => {
         const action = actionSelect.value;
-        if (action === 'mock' || action === 'mobb') {
+        if (action === 'mock') {
             mockWordInput.style.display = 'block';
             mockWordInput.focus();
         } else {
@@ -71,7 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveSettingsToStorage() {
         chrome.storage.sync.set({
-            blacklist: currentSettings.blacklist
+            blacklist: currentSettings.blacklist,
+            mobbRecommendations: currentSettings.mobbRecommendations
         }, () => {
             console.log('Settings saved');
         });
@@ -168,15 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
             action: action
         };
 
-        if (action === 'mock' || action === 'mobb') {
-            if (action === 'mock' && !mockValue) {
+        if (action === 'mock') {
+            if (!mockValue) {
                 mockWordInput.placeholder = "Required!";
                 mockWordInput.focus();
                 return;
             }
-            if (mockValue) {
-                newItem.mock = mockValue;
-            }
+            newItem.mock = mockValue;
         }
 
         console.log('[Popup] Adding item:', newItem);
@@ -208,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('[Popup] Recommendation Input - Word:', word, 'Mock:', mock);
 
-        if (word) {
+        if (word && mock) {
             const originalBtnText = recommendBtn.textContent;
             recommendBtn.textContent = 'Sending...';
             recommendBtn.disabled = true;
@@ -224,16 +223,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
+                    // 1. Add to recommendations history
                     currentSettings.mobbRecommendations.push({
                         word,
                         mock,
                         timestamp: Date.now(),
                         synced: true
                     });
-                    chrome.storage.sync.set({ mobbRecommendations: currentSettings.mobbRecommendations }, () => {
+
+                    // 2. NEW: Add to local blacklist as a mock rule
+                    const existsIndex = currentSettings.blacklist.findIndex(i =>
+                        (typeof i === 'string' ? i : i.word).toLowerCase() === word.toLowerCase()
+                    );
+
+                    const newItem = { word, action: 'mock', mock };
+
+                    if (existsIndex >= 0) {
+                        currentSettings.blacklist[existsIndex] = newItem;
+                    } else {
+                        currentSettings.blacklist.push(newItem);
+                    }
+
+                    // Save everything
+                    chrome.storage.sync.set({
+                        mobbRecommendations: currentSettings.mobbRecommendations,
+                        blacklist: currentSettings.blacklist
+                    }, () => {
                         recommendInput.value = '';
                         recommendMockInput.value = '';
                         recommendBtn.textContent = 'Sent!';
+                        renderBlacklist(); // Update the list view
                     });
                 } else {
                     console.error('API Error:', await response.text());
@@ -248,6 +267,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     recommendBtn.disabled = false;
                 }, 2000);
             }
+        } else {
+            if (!word) recommendInput.focus();
+            else if (!mock) recommendMockInput.focus();
         }
     }
 
