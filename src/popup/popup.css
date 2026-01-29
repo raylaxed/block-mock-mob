@@ -1,0 +1,270 @@
+/* Modern Theme */
+:root {
+    --primary: #6366f1;
+    /* Indigo */
+    --primary-hover: #4f46e5;
+    --danger: #ef4444;
+    /* Red */
+    --success: #22c55e;
+    /* Green */
+    --bg-main: #f3f4f6;
+    --bg-card: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+
+    /* Action Colors */
+    --color-block: #ef4444;
+    --color-mock: #3b82f6;
+    --color-mobb: #8b5cf6;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 320px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+.hud-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 4px;
+}
+
+h1 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+}
+
+.status-indicator {
+    font-size: 0.7rem;
+    background: #dcfce7;
+    color: #166534;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+/* Sections */
+.section {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.description {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0 0 8px 0;
+}
+
+/* Inputs & Forms */
+.add-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.action-row {
+    display: flex;
+    gap: 6px;
+}
+
+.input-field,
+.select-field {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #f9fafb;
+    font-family: inherit;
+}
+
+.input-field:focus,
+.select-field:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+}
+
+.input-field {
+    width: 100%;
+}
+
+.select-field {
+    flex: 0 0 auto;
+    cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: #e5e7eb;
+    color: var(--text-main);
+}
+
+.btn-secondary:hover {
+    background-color: #d1d5db;
+}
+
+/* List Items */
+.list-container {
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 0 -12px;
+    /* Pull to edges */
+    padding: 0 12px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.9rem;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+/* Action Badges in List */
+.item-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.item-word {
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.badge-block {
+    background: #fee2e2;
+    color: var(--color-block);
+}
+
+.badge-mock {
+    background: #dbeafe;
+    color: var(--color-mock);
+}
+
+.badge-mobb {
+    background: #ede9fe;
+    color: var(--color-mobb);
+}
+
+.mock-arrow {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin: 0 4px;
+}
+
+.mock-target {
+    color: var(--text-main);
+    font-weight: 400;
+}
+
+/* Delete Button */
+.delete-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.delete-btn:hover {
+    background: #fee2e2;
+    color: var(--danger);
+}
+
+/* Mobb Section Specifics */
+.mobb-section .input-group {
+    display: flex;
+    gap: 6px;
+}

@@ -1,0 +1,111 @@
+# IMPLEMENATION PLAN: Block-Mock-Mobb Extension
+
+## 1. Project Overview
+**Goal**: Create a browser extension (Chrome & Firefox compatible via Manifest V3) that filters DOM content based on a user-defined blacklist.
+**Core Features**:
+- **HUD (Popup)**: Interface to manage the blacklist and settings.
+- **Operations**:
+    - **Block**: Hide content containing blacklisted words.
+    - **Mock**: Replace blacklisted words with a user-defined "mock" word.
+    - **Mobb**: Share/Retrieve mocks from a shared database (community mocks).
+    - **Recommendation**: Suggest words for blacklisting (stored in DB, private/not visible to community).
+
+## 2. Technical Architecture
+
+### 2.1 Technology Stack
+- **Manifest Version**: V3 (Standard for Chrome/Firefox).
+- **Language**: Vanilla JavaScript (ES6+) or TypeScript (optional, sticking to JS for simplicity unless requested otherwise).
+- **Styling**: Vanilla CSS for the HUD.
+- **Build Tool**: Not strictly necessary for simple extensions, but can use a simple script to zip for deployment.
+
+### 2.2 Core Components
+1.  **Manifest (`manifest.json`)**:
+    - Permissions: `storage`, `activeTab`, `scripting`.
+    - Host Permissions: `<all_urls>` (to run on any page).
+
+2.  **Popup / HUD (`src/popup/`)**:
+    - `popup.html`: Structure for the interface.
+    - `popup.css`: Styling blocks, inputs, and buttons.
+    - `popup.js`: Logic to save/load settings to `browser.storage`.
+    - **Features**:
+        - Input field for Blacklist words.
+        - Input field for "Mock" replacements.
+        - Radio buttons/Dropdown for Operation Mode (Block | Mock | Mobb).
+        - Toggle for "Mobb" features.
+
+3.  **Content Script (`src/content/`)**:
+    - `content.js`: Injected into webpages.
+    - **Logic**:
+        - Listen for storage changes (dynamic updates).
+        - Traverse the DOM (using `TreeWalker` or specific node selection).
+        - **Filter Logic**:
+            - Check text nodes against blacklist.
+            - **If Block**: Apply CSS class to hide element (e.g., `visibility: hidden` or `display: none` on parent).
+            - **If Mock**: Replace text node content.
+            - **If Mobb**: Fetch replacement from stored "community" dictionary.
+
+4.  **Background Service Pattern (`src/background/`)**:
+    - `background.js`:
+    - Handles "Mobb" database synchronization (mocking API calls).
+    - Context menu integration (optional).
+
+## 3. Data Structure (Storage)
+
+We will use `chrome.storage.local` (or `sync`) to persist settings.
+
+```json
+{
+  "settings": {
+    "mode": "mock", // "block" | "mock" | "mobb"
+    "enabled": true
+  },
+  "blacklist": [
+    "badword1",
+    "badword2"
+  ],
+  "mockDictionary": {
+    "badword1": "goodword1",
+    "badword2": "unicorn"
+  },
+  "mobbDatabase": {
+    // Shared mocks synced from "server"
+    "badword1": ["funny_replacement_1", "funny_replacement_2"],
+    // Hidden recommendations (server-side only visibility)
+    "recommendations": [
+        { "word": "suggested_bad_word", "count": 1, "timestamp": 123456789 }
+    ]
+  }
+}
+```
+
+## 4. Implementation Phase Steps
+
+### Phase 1: Foundation & Scaffold (Current)
+- [x] Define Implementation Plan.
+- [ ] Create directory structure.
+- [ ] Create `manifest.json`.
+
+### Phase 2: The HUD (Popup)
+- [ ] Build `popup.html` with inputs for adding words to blacklist.
+- [ ] Implement `popup.js` to save configuration to `chrome.storage`.
+- [ ] Add mode selector (Block/Mock/Mobb).
+
+### Phase 3: Content Script Core
+- [ ] Create `content.js`.
+- [ ] Implement DOM Traversal to find text nodes.
+- [ ] Implement "Block" logic (hiding elements).
+
+### Phase 4: Mock & Replace Logic
+- [ ] Implement Text Replacement logic ("Mock").
+- [ ] Connect "Mock" replacements to user settings.
+
+### Phase 5: "Mobb" Feature
+- [ ] Design simple mock-database structure.
+- [ ] Implement logic to pull/push mocks (simulated or real API).
+- [ ] **Feature**: Implement "Recommend Blacklist" input in HUD.
+- [ ] **Feature**: Create background handler to store recommendations in DB (private).
+
+### Phase 6: Cross-Browser Polish
+- [ ] Test in Chrome.
+- [ ] Test in Firefox.
+- [ ] ensure `browser` vs `chrome` API compatibility (using polyfill or standard namespace).
