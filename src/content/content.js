@@ -143,20 +143,21 @@ function processNode(textNode) {
 
         if (!word) continue;
 
-        if (lowerText.includes(word.toLowerCase())) {
+        // Create a regex that ensures the word is either at the start of the string 
+        // or preceded by a space. This avoids partial matching (e.g. Trump in Trumpet).
+        const regex = new RegExp(`(^|\\s)(${escapeRegExp(word)})`, 'gi');
 
+        if (regex.test(text)) {
             if (action === 'block') {
                 shouldBlock = true;
-                break; // Priority: if blocked, no need to mock
+                break;
             } else if (action === 'mock') {
-                const regex = new RegExp(escapeRegExp(word), 'gi');
-                const replacement = mock || '****'; // Fallback if mock is missing for some reason
-                newText = newText.replace(regex, replacement);
+                const replacement = mock || '****';
+                newText = newText.replace(regex, `$1${replacement}`);
             } else if (action === 'mobb') {
-                const regex = new RegExp(escapeRegExp(word), 'gi');
                 // Community -> Custom Fallback -> Universal Fallback
                 const replacement = state.mobbDictionary[word.toLowerCase()] || mock || '****';
-                newText = newText.replace(regex, replacement);
+                newText = newText.replace(regex, `$1${replacement}`);
             }
         }
     }
