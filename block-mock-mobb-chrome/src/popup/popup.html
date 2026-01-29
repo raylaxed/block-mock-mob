@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block-Mock-Mobb HUD</title>
+    <link rel="stylesheet" href="popup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="hud-container">
+        <header>
+            <h1>Block-Mock-Mobb</h1>
+            <div class="status-indicator">Active</div>
+        </header>
+
+        <!-- Blacklist Management -->
+        <div class="section blacklist-section">
+            <div class="section-header">
+                <h3>Filter Rules</h3>
+                <span class="badge" id="rule-count">0 rules</span>
+            </div>
+
+            <div class="add-controls">
+                <input type="text" id="word-input" class="input-field" placeholder="Target word...">
+
+                <div class="action-row">
+                    <select id="action-select" class="select-field">
+                        <option value="block">🚫 Block</option>
+                        <option value="mock">🤡 Mock</option>
+                    </select>
+
+                    <input type="text" id="mock-word-input" class="input-field" placeholder="Replacement..."
+                        style="display: none;">
+
+                    <button id="add-btn" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+
+            <div class="list-container">
+                <ul id="blacklist-list">
+                    <!-- Items will be injected here -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Mobb Recommendation Section -->
+        <div class="section mobb-section">
+            <div class="section-header">
+                <h3>Mobb with MobbBase</h3>
+            </div>
+            <p class="description">Contribute to the MobbBase blacklist.</p>
+            <div class="input-group">
+                <input type="text" id="recommend-input" class="input-field" placeholder="Word...">
+                <input type="text" id="recommend-mock-input" class="input-field" placeholder="Mock...">
+                <button id="recommend-btn" class="btn btn-secondary">Send</button>
+            </div>
+        </div>
+
+        <div class="section mobb-section">
+            <div class="section-header">
+                <h3>MobbBase Blacklist</h3>
+            </div>
+            <p class="description">
+                <a href="https://mobbit-db.vercel.app/" target="_blank"
+                    style="color: var(--primary); text-decoration: none;">https://mobbit-db.vercel.app/</a>
+            </p>
+
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>

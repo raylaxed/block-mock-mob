@@ -139,49 +139,15 @@ document.addEventListener('DOMContentLoaded', () => {
             li.appendChild(infoDiv);
 
             // Right side
-            const actionsDiv = document.createElement('div');
-            actionsDiv.className = 'actions-group';
-
-            // Mobb (Share) Button
-            const shareBtn = document.createElement('button');
-            shareBtn.innerHTML = '👹';
-            shareBtn.className = 'share-btn';
-            shareBtn.title = 'Share to MobbBase';
-            shareBtn.onclick = () => shareRule(index);
-            actionsDiv.appendChild(shareBtn);
-
-            // Delete button
             const delBtn = document.createElement('button');
             delBtn.innerHTML = '&times;';
             delBtn.className = 'delete-btn';
             delBtn.title = 'Remove rule';
             delBtn.onclick = () => removeBlacklistItem(index);
-            actionsDiv.appendChild(delBtn);
 
-            li.appendChild(actionsDiv);
+            li.appendChild(delBtn);
             blacklistList.appendChild(li);
         });
-    }
-
-    function shareRule(index) {
-        const item = currentSettings.blacklist[index];
-        if (!item) return;
-
-        // Auto-fill recommendation fields
-        recommendInput.value = item.word;
-        recommendMockInput.value = item.mock || '';
-
-        // If it was a block rule, focus the mock input and ask the user to provide a mock
-        if (item.action === 'block' || !item.mock) {
-            recommendMockInput.placeholder = "Add a mock to share!";
-            recommendMockInput.focus();
-
-            // Scroll to the recommendation section
-            document.querySelector('.mobb-section').scrollIntoView({ behavior: 'smooth' });
-        } else {
-            // If we have a mock, just send it!
-            sendRecommendation();
-        }
     }
 
     function addBlacklistItem() {

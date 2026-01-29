@@ -27,9 +27,8 @@
     "128": "src/assets/icon.png"
   },
   "background": {
-    "scripts": [
-      "src/background/background.js"
-    ]
+    "service_worker": "src/background/background.js",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -40,11 +39,5 @@
         "src/content/content.js"
       ]
     }
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "block-mock-mobb@mobbit-db.vercel.app",
-      "strict_min_version": "109.0"
-    }
-  }
+  ]
 }

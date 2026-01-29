@@ -263,33 +263,6 @@ li:last-child {
     color: var(--danger);
 }
 
-.share-btn {
-    background: transparent;
-    color: var(--text-muted);
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    font-size: 0.9rem;
-    line-height: 1;
-    margin-right: 4px;
-}
-
-.share-btn:hover {
-    background: #ede9fe;
-    color: var(--color-mobb);
-}
-
-.actions-group {
-    display: flex;
-    align-items: center;
-}
-
 /* Mobb Section Specifics */
 .mobb-section .input-group {
     display: flex;
