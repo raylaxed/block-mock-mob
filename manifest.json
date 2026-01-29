@@ -10,7 +10,8 @@
     "alarms"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "<all_urls>",
+    "https://mobbit-db.vercel.app/*"
   ],
   "action": {
     "default_popup": "src/popup/popup.html",
@@ -26,7 +27,11 @@
     "128": "src/assets/icon.png"
   },
   "background": {
-    "service_worker": "src/background/background.js"
+    "scripts": [
+      "src/background/background.js"
+    ],
+    "service_worker": "src/background/background.js",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -37,5 +42,10 @@
         "src/content/content.js"
       ]
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "block-mock-mobb@mobbit-db.vercel.app"
+    }
+  }
 }
